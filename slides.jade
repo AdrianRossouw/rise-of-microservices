@@ -13,21 +13,27 @@ article
       li That are all deployed independently.
       li And then tie them together using a REST like network protocol.
       li Kind of like a more granular service-oriented-architecture.
-      li I like to think of them <a href='http://daemon.co.za/2014/04/monkeys-and-microservices/'>in terms of monkeys</a>
+      li What's changed from before? The focus on simplicity.
+      li That and DevOps, and docker.
 
   section
     h2 The Promise of Microservices
     hr
     ul
+      li Developer autonomy.
+      li Maintainability.
       li Composability.
+      li Enforces statelessness.
       li Ease of Understanding.
       li Resilience and stability.
-      li Maintainability.
       li Performance and scalability.
-      li Enforces statelessness.
-      li Developer friendliness.
 
   section
+    h2 Microservices are no silver bullet!
+    hr
+    h3 I'll get to the warts later, but first... the good stuff.
+
+  section(data-bespoke-backdrop='earth')
     h2 My Story
     hr
     ul
@@ -37,7 +43,6 @@ article
       li Migrated a monolithic codebase to microservices while CTO of <a href='http://wayfinder.is'>Wayfinder</a>.
       li Founded <a href='http://github.com/adrianrossouw/waif'>Waif</a>, as a stop-gap to getting started with services.
       li Founded <a href='http://github.com/graftjs/graft'>Graft</a>, to deliver on my vision of a future based on microservices.
-      li More on Graft later ...
 
   section
     h2 Migrating to a microservice architecture 
@@ -50,7 +55,7 @@ article
       li Expect to write a fair amount of glue code.
       li Once you have replaced all of it, you can turn off the old system.
 
-  section
+  section(data-bespoke-backdrop='gears')
     h2 Sync vs Async
     hr
     h3 Which is better? "It Depends".
@@ -114,17 +119,7 @@ article
       li Any service that needs to, can contact the auth service to retrieve a user record to work with.
       li Transaction ID's can also greatly increase your ability to debug issues.
 
-
-  section
-    h2 Databases
-    hr
-    ul
-      li None of this is a hard recommendation, but ...
-      li Many services accessing the same database could lead to data integrity issues.
-      li Services seem to like having their own database more.
-      li Being able to use event logs to reconstruct data is very useful.
-  
-  section
+  section(data-bespoke-backdrop='plans')
     h2 Deployment
     hr
     ul
@@ -141,14 +136,24 @@ article
     hr
     ul
       li You need to be able to map services to each other.
-      li 
+      li This is mostly irrelevant for asynchronous services.
+      li You can actually get very far using just environment variables.
+      li I am told that DNS based solutions are also very useful.
+      li The next step up is something like etcd or consul.
 
   section
     h2 Instrumentation
-
+    hr
+    ul
+      li You have as many log files as you have instances of services.
+      li Finding a bug that happens when errors happen across services can be a nightmare.
+      li You really need something that pulls your logs into a central location.
+      li NewRelic and Papertrail can help for some of these things.
+      li We liked Elasticsearch + Logstash + Kibana the most.
+      li There's no standard way to pipe logs from docker, so we wrote <a href='http://github.com/wayfin/dockstash'>Dockstash</a>
 
   section
-    h1 Final Thoughts
+    h1 The Bad Stuff
 
   section
     h2 DevOps DevOps DevOps
@@ -175,12 +180,12 @@ article
     h2 Organizational effects
     hr
     ul
-      li It seems to increase 'ownership' of code.
-      li Can increase 'tunnel vision' amongst developers.
-      li Although the services are still easy to replace / modify if needed.
       li Whereas monolithic systems have a binary downtime (it's either running or not).
       li Microservice apps have downtime where only specific parts of the experience stop working.
       li You might need to do some expectation management around that.
+      li It seems to increase 'ownership' of code.
+      li Can increase 'tunnel vision' amongst developers.
+      li Although the services are still easy to replace / modify if needed.
 
   section(data-bespoke-backdrop='orion')
     h1 Thanks!

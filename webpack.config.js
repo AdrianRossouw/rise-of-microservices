@@ -20,6 +20,6 @@ module.exports = {
     root: [path.join(__dirname, "bower_components")]
   },
   plugins: [
-    new HtmlWebpackPlugin({ title: "Webpack Über Alles | an introduction"  })
+    new HtmlWebpackPlugin({ title: "The Rise of Microservices"  })
 ]
 };
