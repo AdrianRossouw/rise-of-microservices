@@ -1,0 +1,34 @@
+{
+  "name": "webpack-slides",
+  "version": "0.0.1",
+  "description": "Slides from webpack uber alles presentation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrian Rossouw <adrian@daemon.co.za>",
+  "license": "MIT",
+  "devDependencies": {
+    "bespoke": "^1.0.0",
+    "bespoke-backdrop": "^1.0.0",
+    "bespoke-bullets": "^1.1.0",
+    "bespoke-hash": "^1.0.0",
+    "bespoke-keys": "^1.0.0",
+    "bespoke-progress": "^1.0.0",
+    "bespoke-scale": "^1.0.1",
+    "bespoke-state": "^1.0.0",
+    "bespoke-theme-nebula": "^1.0.1",
+    "bespoke-touch": "^1.0.0",
+    "bower": "^1.3.12",
+    "css-loader": "^0.9.0",
+    "file-loader": "^0.8.1",
+    "html-webpack-plugin": "^1.1.0",
+    "jade-loader": "^0.7.0",
+    "less": "^1.7.5",
+    "less-loader": "^0.7.7",
+    "react": "^0.12.1",
+    "style-loader": "^0.8.2",
+    "webpack": "^1.4.13",
+    "webpack-dev-server": "^1.6.6"
+  }
+}
