@@ -6,54 +6,181 @@ article
 
   section
     h2 What are microservices?
-
-  section
-    h2 The Secret History 
     hr
     ul
       li Microservices are just a new name for an existing approach to systems.
+      li Focus on building the smallest and simplest components as services.
+      li That are all deployed independently.
+      li And then tie them together using a REST like network protocol.
+      li Kind of like a more granular service-oriented-architecture.
+      li I like to think of them <a href='http://daemon.co.za/2014/04/monkeys-and-microservices/'>in terms of monkeys</a>
 
   section
     h2 The Promise of Microservices
-  
+    hr
+    ul
+      li Composability.
+      li Ease of Understanding.
+      li Resilience and stability.
+      li Maintainability.
+      li Performance and scalability.
+      li Enforces statelessness.
+      li Developer friendliness.
+
   section
     h2 My Story
+    hr
+    ul
+      li Long-time Drupal core developer.
+      li Founder of the <a href='http://community.aegirproject.org'>Aegir Project</a>, a hosting system for Drupal sites.
+      li Encountered microservices while doing some work with <a href='http://senecajs.org'>Seneca.js</a>.
+      li Migrated a monolithic codebase to microservices while CTO of <a href='http://wayfinder.is'>Wayfinder</a>.
+      li Founded <a href='http://github.com/adrianrossouw/waif'>Waif</a>, as a stop-gap to getting started with services.
+      li Founded <a href='http://github.com/graftjs/graft'>Graft</a>, to deliver on my vision of a future based on microservices.
+      li More on Graft later ...
+
+  section
+    h2 Migrating to a microservice architecture 
+    hr
+    ul
+      li Does not require a full rewrite, in the general sense.
+      li Is best done slowly and carefully.
+      li First thing. Stop adding features to the monolith.
+      li Each new feature or non-trivial fix is an opportunity for a new service.
+      li Expect to write a fair amount of glue code.
+      li Once you have replaced all of it, you can turn off the old system.
 
   section
     h2 Sync vs Async
+    hr
+    h3 Which is better? "It Depends".
+
+  section
+    h2 Synchronous services
+    hr
+    ul
+      li Think: REST.
+      li Uses the RequestResponse pattern.
+      li Easiest to get started with, most of your code works this way already.
+      li Guaranteed only one response per request.
+      li Any failure causes the entire request to fail, or stall.
+      li Simple express apps work great for this.
+
+  section
+    h2 Asynchronous
+    ul
+      li Think: Message Queues.
+      li Can use a PubSub pattern, or something similar.
+      li Fire-and-forget nature is very appealing.
+      li All services can respond to all messages.
+      li You can get more than one response for each message.
+      li How do you pick the best response? 'It Depends'.
+      li More moving parts, but by their nature make you more resilient.
+      li Redis is a good start, as is 0mq.
 
   section
     h2 Page Composition
+    hr
+    ul
+      li A good starting point is to slice up responsibility on a page by page basis.
+      li ie: The user page is managed by the user client side app, and related services.
+      li You can also slice up the responsibility of populating a page and spread between services.
+      li This is very commonly used to generate advertising for instance.
+      li It's a balancing act, and the best answer to the problem is "It Depends"
+      li Microservices and the browser don't quite ... gel.
+      li Personally I blame the DOM. Scariest piece of shared state ever.
 
   section
     h2 API Gateways
+    hr
+    ul
+      li Security of microservices is a big concern.
+      li You have to accept that at some point, you will rely on the network to be secure.
+      li An API gateway is a proxy that maps your internal services, in a way that they are exposed externally.
+      li This is a critically useful tool when it comes to rolling out new releases, and building applications.
+      li You can even build versioned API's that map to older running copies of the services (or workalikes).
+      li It is a great place to implement authentication and logging.
+      li Allows the use of cookies, since all services are on the same domain.
 
   section
     h2 Authentication
+    hr
+    ul
+      li Inside your secure network, you shouldnt have to use auth, but perhaps api tokens are a good option.
+      li At your API gateway, you should implement standard cookie or token-based auth.
+      li I recommend authenticating against some service, either your own or external.
+      li <a href='http://stormpath.com'>StormPath</a> seems to have a solid SaaS offering that can handle this for you.
+      li Your API gateway should pass down a session identifier to all services (and they need to pass it to all others).
+      li Any service that needs to, can contact the auth service to retrieve a user record to work with.
+      li Transaction ID's can also greatly increase your ability to debug issues.
+
 
   section
-    h1 What people don't tell you
-
-  section
-    h2 Organizational effects
-
-  section
-    h2 DevOps DevOps DevOps
-
+    h2 Databases
+    hr
+    ul
+      li None of this is a hard recommendation, but ...
+      li Many services accessing the same database could lead to data integrity issues.
+      li Services seem to like having their own database more.
+      li Being able to use event logs to reconstruct data is very useful.
+  
   section
     h2 Deployment
+    hr
+    ul
+      li You need to be able to deploy services many times a day.
+      li Services should be deployable in several environments (prod and dev especially).
+      li You need to be able to run multiple copies of services.
+      li You will be in situations where you will need to deploy multiple services at once.
+      li You will need to be able to run multiple versions of services concurrently.
+      li We ended up writing our own deployment tool: <a href='http://longshoreman.io'>Longshoreman</a>.
+      li Other good options are <a href='http://nscale.nearform.com/'>NScale</a> and <a href='http://deis.io/'>Deis</a>.
 
   section
     h2 Orchestration
-
-  section
-    h2 Service Discovery
+    hr
+    ul
+      li You need to be able to map services to each other.
+      li 
 
   section
     h2 Instrumentation
 
+
   section
-    h2 Final thoughts
+    h1 Final Thoughts
+
+  section
+    h2 DevOps DevOps DevOps
+    hr
+    ul
+      li Do not attempt this if you do not have sufficient DevOps skills amongst your team.
+      li You greatly increase your reliance on your admins.
+      li You also reduce the amount of people who can debug certain problems.
+      li There is a significant upfront investment to get started down this road.
+      li The ecosystem is changing incredibly fast, and might be difficult to track.
+
+  section
+    h2 Development Experience
+    hr
+    ul
+      li It isn't less complex than a monolith, just differently complex.
+      li It can be very difficult to test 'the whole system'.
+      li Many moving parts make things difficult to understand completely.
+      li It can sometimes be difficult to stabilise initially, because integration testing is hard.
+      li Debugging problems that happen across servers can be incredibly difficult.
+      li Cascading failures are not to be sneezed at.
+  
+  section
+    h2 Organizational effects
+    hr
+    ul
+      li It seems to increase 'ownership' of code.
+      li Can increase 'tunnel vision' amongst developers.
+      li Although the services are still easy to replace / modify if needed.
+      li Whereas monolithic systems have a binary downtime (it's either running or not).
+      li Microservice apps have downtime where only specific parts of the experience stop working.
+      li You might need to do some expectation management around that.
 
   section(data-bespoke-backdrop='orion')
     h1 Thanks!

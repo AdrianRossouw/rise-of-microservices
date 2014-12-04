@@ -24,7 +24,7 @@ bespoke.from('article', [
   touch(),
   nebula(),
   keys(),
-  bullets('li, .bullet')
+ // bullets('li, .bullet')
 ]);
 
 require('prism');
